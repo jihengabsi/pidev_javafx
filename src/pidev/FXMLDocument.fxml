@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane id="AnchorPane" prefHeight="537.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="validation1.FXMLDocumentController">
+   <children>
+      <TableView fx:id="tabv" layoutX="229.0" layoutY="50.0" prefHeight="200.0" prefWidth="850.0">
+         <columns>
+            <TableColumn fx:id="titre" prefWidth="117.0" text="titre" />
+            <TableColumn fx:id="date" prefWidth="138.0" text="date" />
+            <TableColumn fx:id="lieu" prefWidth="120.0" text="lieu" />
+            <TableColumn fx:id="description" prefWidth="118.0" text="description" />
+            <TableColumn fx:id="prix" prefWidth="118.0" text="prix" />
+            <TableColumn fx:id="date_fin" prefWidth="118.0" text="date_fin" />
+         </columns>
+      </TableView>
+           <TextField fx:id="filterField" layoutX="105.0" layoutY="0" prefHeight="25.0" prefWidth="348.0" style="-fx-background-color: #E5E7E9;" />
+      <Label layoutX="22.0" layoutY="0" text="Search">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+    
+   
+
+     <JFXTextField fx:id="titref" layoutX="10" layoutY="77.0" promptText="titre" />
+      <JFXDatePicker fx:id="datef" layoutX="10" layoutY="303.0" promptText="date" />
+      <JFXTextField fx:id="lieuf" layoutX="10" layoutY="35.0" promptText="lieu" />
+      <JFXTextField fx:id="descriptionf" layoutX="10" layoutY="120.0" promptText="description" />
+      <JFXTextField fx:id="prixf" layoutX="10" layoutY="208.0" promptText="prix" />
+      <JFXDatePicker fx:id="date_finf" layoutX="10" layoutY="254.0" promptText="date_fin" />
+      <FontAwesomeIconView glyphName="TRASH" layoutX="1026.0" layoutY="40" onMouseClicked="#deleteqct" size="25">
+        
+      </FontAwesomeIconView>
+      <FontAwesomeIconView glyphName="WRENCH" layoutX="974.0" layoutY="40" onMouseClicked="#update" size="25">
+        
+      </FontAwesomeIconView>
+   </children>
+</AnchorPane>
