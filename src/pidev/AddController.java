@@ -54,6 +54,7 @@ public class AddController implements Initializable {
                     date_finf.setValue(LocalDate.parse(f.getDate_fin().toString()));
                    
         sf.AjouterOffre(f);
+        /////
 
     }
 
