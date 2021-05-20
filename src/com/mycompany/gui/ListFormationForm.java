@@ -9,6 +9,7 @@ import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.messaging.Message;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Component;
@@ -19,6 +20,7 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
@@ -49,7 +51,7 @@ import java.util.Date;
 
 public class ListFormationForm extends BaseForm{
     
-         Form current;
+       public  Form current;
         public ListFormationForm(Resources res){
         
             super("Newsfeed",BoxLayout.y());
@@ -112,40 +114,42 @@ public class ListFormationForm extends BaseForm{
         ButtonGroup barGroup = new ButtonGroup();
         RadioButton mesListes = RadioButton.createToggle("Les formations", barGroup);
         mesListes.setUIID("SelectBar");
-        RadioButton liste = RadioButton.createToggle("Autres", barGroup);
-        liste.setUIID("SelectBar");
-        RadioButton partage = RadioButton.createToggle("Ajouter formation", barGroup);
-        partage.setUIID("SelectBar");
+  
+        RadioButton ajout = RadioButton.createToggle("Ajouter formation", barGroup);
+        ajout.setUIID("SelectBar");
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
 
-
+        ajout.addActionListener((e) -> {
+        InfiniteProgress ip = new InfiniteProgress();
+        final Dialog ipDlg = ip.showInifiniteBlocking();
+        
+          AjoutFormationForm a = new AjoutFormationForm(res);
+            a.show();
+            refreshTheme();
+         });
         mesListes.addActionListener((e) -> {
                InfiniteProgress ip = new InfiniteProgress();
         final Dialog ipDlg = ip.showInifiniteBlocking();
         
-        //  ListReclamationForm a = new ListReclamationForm(res);
-          //  a.show();
+          ListFormationForm a = new ListFormationForm(res);
+            a.show();
             refreshTheme();
         });
 
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(3, mesListes, liste, partage),
-                FlowLayout.encloseBottom(arrow)
+                GridLayout.encloseIn(2, mesListes, ajout)
+                
         ));
 
-        partage.setSelected(true);
-        arrow.setVisible(false);
+        mesListes.setSelected(true);
+       
         addShowListener(e -> {
             arrow.setVisible(true);
-            updateArrowPosition(partage, arrow);
+            
         });
-        bindButtonSelection(mesListes, arrow);
-        bindButtonSelection(liste, arrow);
-        bindButtonSelection(partage, arrow);
+       
         // special case for rotation
-        addOrientationListener(e -> {
-            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
-        });
+     
         
         ArrayList<Formation>list = ServiceFormation.getInstance().affichageFormations();
         
@@ -155,7 +159,7 @@ public class ListFormationForm extends BaseForm{
             EncodedImage enc=EncodedImage.createFromImage(placeHolder, false);
             URLImage urlim= URLImage.createToStorage(enc,urlImage,urlImage,URLImage.RESIZE_SCALE);
             
-            addButton(urlim,fo.getTitre(),fo.getDescritpion());
+            addButton(urlim,fo,res);
             
             ScaleImageLabel image = new ScaleImageLabel(urlim);
             Container containerImg= new Container();
@@ -205,22 +209,9 @@ public class ListFormationForm extends BaseForm{
 
     }
     
-    public void bindButtonSelection(Button btn,Label l){
-        
-        btn.addActionListener(e->{
-            if(btn.isSelected()){
-                updateArrowPosition(btn,l);
-            }
-        });
-    }
+  
 
-    private void updateArrowPosition(Button btn, Label l) {
-          l.getUnselectedStyle().setMargin(LEFT,btn.getX()+btn.getWidth()/2-l.getWidth()/2);
-          l.getParent().repaint();
-
-    }
-
-    private void addButton(Image img, String titre, String discr) {
+    private void addButton(Image img, Formation fo,Resources res) {
     
         int height = Display.getInstance().convertToPixels(11.5f);
         int width = Display.getInstance().convertToPixels(14f);
@@ -229,10 +220,56 @@ public class ListFormationForm extends BaseForm{
         image.setUIID("Label");
         Container cnt = BorderLayout.west(image) ;
         
-        Label titreTxt = new Label("Titre:"+titre,"titre");
-        Label discTxt = new Label("Description:"+discr,"Description");
+        Label titreTxt = new Label("Titre:"+fo.getTitre(),"titre");
+        Label discTxt = new Label("Description:"+fo.getDescritpion(),"Description");
 
-        cnt.add(BorderLayout.CENTER,BoxLayout.encloseY(BoxLayout.encloseX(titreTxt),BoxLayout.encloseX(discTxt)));
+       // cnt.add(BorderLayout.CENTER,BoxLayout.encloseY(BoxLayout.encloseX(titreTxt),BoxLayout.encloseX(discTxt)));
+        
+        Label lSupprimer = new Label("");
+        lSupprimer.setUIID("suupp");
+        Style supprimerStyle = new Style(lSupprimer.getUnselectedStyle());
+        supprimerStyle.setFgColor(0xf21f1f);
+        
+        FontImage supprimerImage = FontImage.createMaterial(FontImage.MATERIAL_DELETE,supprimerStyle);
+        lSupprimer.setIcon(supprimerImage);
+        lSupprimer.setTextPosition(RIGHT);
+        lSupprimer.addPointerPressedListener(l ->{
+          Dialog dig = new Dialog("Suppression");
+          
+          if(dig.show("Suppression","Vous voulez supprimer cette formation?","Annuler","Oui")){
+              dig.dispose();
+          }
+          else{
+              dig.dispose();
+              if(ServiceFormation.getInstance().deleteFormation(fo.getId())){
+                
+                  Message m = new Message("<html><body>Check out <a href=\"https://www.codenameone.com/\">Codename One</a></body></html>");
+                  m.setMimeType(Message.MIME_HTML);
+
+// notice that we provide a plain text alternative as well in the send method
+                      boolean success = m.sendMessageViaCloudSync("Codename One", "destination@domain.com", "Name Of User", "Message Subject",
+                            "Check out Codename One at https://www.codenameone.com/");
+                  Display.getInstance().sendMessage(new String[] {"gabsijihen31@gmail.com"}, "Subject of message", m);
+                  new ListFormationForm(res).show();
+              }
+          }
+        });
+    
+         Label lModifier = new Label("");
+        lModifier.setUIID("modif");
+        Style modifierStyle = new Style(lModifier.getUnselectedStyle());
+        modifierStyle.setFgColor(0xf7ad02);
+        FontImage modifierrImage = FontImage.createMaterial(FontImage.MATERIAL_MODE_EDIT,modifierStyle);
+        lModifier.setIcon(modifierrImage);
+        lModifier.setTextPosition(LEFT);
+        
+        lModifier.addPointerPressedListener(l ->{
+         new ModifierFormationForm(res,fo).show();
+        });
+        
+        cnt.add(BorderLayout.WEST,BoxLayout.encloseY(
+                BoxLayout.encloseX(titreTxt,discTxt,lModifier,lSupprimer)));
+        
         add(cnt);
         
     }

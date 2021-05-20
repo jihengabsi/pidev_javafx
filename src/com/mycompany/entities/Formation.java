@@ -19,7 +19,7 @@ public class Formation {
     public Formation() {
     }
 
-    public Formation( String Titre, String category, String Descritpion, String Lieu,int Prix, String Date, String dateFin) {
+    public Formation(String Titre,  String Lieu,String Descritpion,int Prix, String category, String Date, String dateFin) {
        
         this.Titre = Titre;
         this.category = category;

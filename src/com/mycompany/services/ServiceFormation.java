@@ -25,7 +25,7 @@ import java.util.Map;
 public class ServiceFormation {
     public static ServiceFormation instance =null;
     
-    public static boolean resultOk;
+    public static boolean resultOk = true;
     
     private ConnectionRequest req;
     
@@ -42,7 +42,8 @@ public class ServiceFormation {
     public void ajoutFormation(Formation formation){
         
        
-        String url= Statics.BASE_URL+"/addFor?Description="+formation.getDescritpion()+"&Lieu="+formation.getLieu()+"&Titre="+formation.getTitre()+"&Prix="+formation.getPrix()+"&category="+formation.getCategory();
+        String url= Statics.BASE_URL+"/addFor?Description="+formation.getDescritpion()+"&Lieu="+formation.getLieu()+"&Titre="+formation.getTitre()+"&Prix="+formation.getPrix()+"&category="+formation.getCategory()
+                +"&Date="+formation.getDate()+"&DateFin="+formation.getDateFin();
         
         req.setUrl(url);
         req.addResponseListener((e)->{
@@ -133,7 +134,7 @@ public class ServiceFormation {
     }
     
     public boolean deleteFormation(int id){
-        String url = Statics.BASE_URL+"/deleteFormation?"+id;
+        String url = Statics.BASE_URL+"/deleteFormation?id="+id;
         
         req.setUrl(url);
         
@@ -141,6 +142,24 @@ public class ServiceFormation {
             @Override
             public void actionPerformed(NetworkEvent evt) {
                  req.removeResponseListener(this);
+
+            }
+      
+        
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOk;
+    }
+    public boolean modifierFormation(Formation form){
+        String url = Statics.BASE_URL+"/updateFormation?id="+form.getId()+"&Titre="+form.getTitre()+"&Description="+form.getDescritpion()+"&Prix="+form.getPrix()+"&Lieu="+
+                form.getLieu()+"&category="+form.getCategory();
+        req.setUrl(url);
+           req.addResponseListener(new ActionListener<NetworkEvent>(){
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOk = req.getResponseCode()==200;
+                req.removeResponseListener(this);
+
 
             }
       

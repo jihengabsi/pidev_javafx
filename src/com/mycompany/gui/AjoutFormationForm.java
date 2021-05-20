@@ -11,6 +11,7 @@ import com.codename1.components.SpanLabel;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
+import com.codename1.ui.ComboBox;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
@@ -29,6 +30,7 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
+import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Formation;
 import com.mycompany.gui.BaseForm;
@@ -104,41 +106,36 @@ public class AjoutFormationForm extends BaseForm{
         ButtonGroup barGroup = new ButtonGroup();
         RadioButton mesListes = RadioButton.createToggle("Les formations", barGroup);
         mesListes.setUIID("SelectBar");
-        RadioButton liste = RadioButton.createToggle("Autres", barGroup);
-        liste.setUIID("SelectBar");
-        RadioButton partage = RadioButton.createToggle("Ajouter formation", barGroup);
-        partage.setUIID("SelectBar");
-        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
+        RadioButton ajout = RadioButton.createToggle("Ajouter formation", barGroup);
+        ajout.setUIID("SelectBar");
 
-
+        ajout.addActionListener((e) -> {
+        InfiniteProgress ip = new InfiniteProgress();
+        final Dialog ipDlg = ip.showInifiniteBlocking();
+        
+          AjoutFormationForm a = new AjoutFormationForm(res);
+            a.show();
+            refreshTheme();
+         });
         mesListes.addActionListener((e) -> {
                InfiniteProgress ip = new InfiniteProgress();
         final Dialog ipDlg = ip.showInifiniteBlocking();
         
-        //  ListReclamationForm a = new ListReclamationForm(res);
-          //  a.show();
+          ListFormationForm a = new ListFormationForm(res);
+            a.show();
             refreshTheme();
         });
 
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(3, mesListes, liste, partage),
-                FlowLayout.encloseBottom(arrow)
+                GridLayout.encloseIn(2, mesListes, ajout)
+               
         ));
 
-        partage.setSelected(true);
-        arrow.setVisible(false);
-        addShowListener(e -> {
-            arrow.setVisible(true);
-            updateArrowPosition(partage, arrow);
-        });
-        bindButtonSelection(mesListes, arrow);
-        bindButtonSelection(liste, arrow);
-        bindButtonSelection(partage, arrow);
+        ajout.setSelected(true);
+      
+      
         // special case for rotation
-        addOrientationListener(e -> {
-            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
-        });
-
+       
        
         
         
@@ -153,18 +150,26 @@ public class AjoutFormationForm extends BaseForm{
         TextField lieu = new TextField("","entrer lieu!");
         lieu.setUIID("TextFieldBlack");
         addStringValue("Lieu",lieu);
-        
-        TextField category = new TextField("","entrer category!");
-        category.setUIID("TextFieldBlack");
-        addStringValue("category",category);
-        
-        TextField Prix = new TextField("","entrer Prix!");
+       
+        ComboBox catCombo = new ComboBox();
+        catCombo.addItem("Informatique");
+        catCombo.addItem("Mécanique");
+        addStringValue("combo",catCombo);
+        TextField Prix = new TextField(String.valueOf(0),"entrer Prix!");
         Prix.setUIID("TextFieldBlack");
       
         addStringValue("Prix",Prix);
         
-
-        
+        Picker datePicker = new Picker();
+        datePicker.setType(Display.PICKER_TYPE_DATE);
+        datePicker.setUIID("TextFieldBlack");
+        addStringValue("Date",datePicker);
+         
+        Picker datePickerFin = new Picker();
+        datePickerFin.setType(Display.PICKER_TYPE_DATE);
+        datePickerFin.setUIID("TextFieldBlack");
+        addStringValue("Date",datePickerFin);
+         
         Button btnAjouter = new Button("Ajouter");
         addStringValue("",btnAjouter);
         
@@ -177,15 +182,18 @@ public class AjoutFormationForm extends BaseForm{
                 else{
                     InfiniteProgress ip = new InfiniteProgress();
                     final Dialog iDialog=ip.showInfiniteBlocking();
+                    
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                   
+                   
                     Formation f = new Formation(
                             String.valueOf(titre.getText()).toString(),
-                            String.valueOf(Descritpion.getText()).toString(),
-                             String.valueOf(lieu.getText()).toString(),
-                             String.valueOf(category.getText()).toString(),
-                             50,
-                             format.format(new Date()).toString(),
-                            format.format(new Date()).toString());
+                          String.valueOf(lieu.getText()).toString() ,
+                             String.valueOf(Descritpion.getText()).toString(),
+                             Integer.parseInt(Prix.getText()),
+                             catCombo.getSelectedItem().toString(),
+                             format.format(datePicker.getDate()).toString(),
+                            format.format(datePickerFin.getDate()).toString());
                     System.out.println("data formation=="+f);
                     ServiceFormation.getInstance().ajoutFormation(f);
                     iDialog.dispose();
@@ -243,18 +251,7 @@ public class AjoutFormationForm extends BaseForm{
 
     }
     
-    public void bindButtonSelection(Button btn,Label l){
-        
-        btn.addActionListener(e->{
-            if(btn.isSelected()){
-                updateArrowPosition(btn,l);
-            }
-        });
-    }
+  
 
-    private void updateArrowPosition(Button btn, Label l) {
-          l.getUnselectedStyle().setMargin(LEFT,btn.getX()+btn.getWidth()/2-l.getWidth()/2);
-          l.getParent().repaint();
-
-    }
+   
 }
