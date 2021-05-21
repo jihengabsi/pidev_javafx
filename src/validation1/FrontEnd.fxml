@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="893.0" prefWidth="1255.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="validation1.FrontEndController">
+   <children>
+      <VBox prefHeight="893.0" prefWidth="306.0" style="-fx-background-color: #ff7f00;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane prefHeight="132.0" prefWidth="306.0">
+               <children>
+                  <FontAwesomeIconView glyphName="USERS" layoutX="14.0" layoutY="83.0" size="50" />
+                  <Label layoutX="81.0" layoutY="39.0" text="EMPLOYINI">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button graphicTextGap="10.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="312.0" stylesheets="@../css/style.css" text="Home" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="30" />
+               </graphic>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button graphicTextGap="10.0" mnemonicParsing="false" onAction="#OffreShow" prefHeight="104.0" prefWidth="312.0" stylesheets="@../css/style.css" text="Offre" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="BULLHORN" size="30" />
+               </graphic>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button graphicTextGap="10.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="312.0" stylesheets="@../css/style.css" text="Formation" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="LAPTOP" size="30" />
+               </graphic>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button graphicTextGap="10.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="312.0" stylesheets="@../css/style.css" text="Stage" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="30" />
+               </graphic>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button graphicTextGap="10.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="312.0" stylesheets="@../css/style.css" text="Event" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="CALENDAR" size="30" />
+               </graphic>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button graphicTextGap="10.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="312.0" stylesheets="@../css/style.css" text="ModeleCV" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" size="30" />
+               </graphic>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <AnchorPane layoutX="602.0" layoutY="41.0" prefHeight="132.0" prefWidth="948.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="context" layoutX="462.0" layoutY="289.0" prefHeight="760.0" prefWidth="948.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="537.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="validation1.FXMLDocumentController">
+   <children>
+      <TableView fx:id="tabv" layoutX="229.0" layoutY="175.0" prefHeight="200.0" prefWidth="850.0">
+         <columns>
+            <TableColumn fx:id="title" prefWidth="117.0" text="title" />
+            <TableColumn fx:id="dom" prefWidth="138.0" text="domain" />
+            <TableColumn fx:id="ville" prefWidth="120.0" text="ville" />
+            <TableColumn fx:id="salary" prefWidth="118.0" text="salary" />
+            <TableColumn fx:id="cmpName" prefWidth="118.0" text="company name" />
+            <TableColumn fx:id="desc" prefWidth="118.0" text="description" />
+            <TableColumn fx:id="type" prefWidth="118.0" text="type" />
+         </columns>
+      </TableView>
+      <JFXTextField fx:id="domaintf" layoutX="36.0" layoutY="144.0" />
+      <JFXTextField fx:id="typetf" layoutX="36.0" layoutY="370.0" />
+      <JFXTextField fx:id="titletf" layoutX="36.0" layoutY="102.0" />
+      <JFXTextField fx:id="villetf" layoutX="36.0" layoutY="187.0" />
+      <JFXTextField fx:id="cmpNametf" layoutX="36.0" layoutY="275.0" />
+      <JFXTextField fx:id="desctf" layoutX="36.0" layoutY="321.0" />
+      <FontAwesomeIconView glyphName="TRASH" layoutX="1026.0" layoutY="154.0" onMouseClicked="#deleteqct" size="25">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <FontAwesomeIconView glyphName="WRENCH" layoutX="974.0" layoutY="154.0" onMouseClicked="#update" size="25">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+   </children>
+</AnchorPane>
